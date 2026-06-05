@@ -1,0 +1,22 @@
+services:
+  app:
+    image: ghcr.io/jawg-zz/ping-api:latest
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: "128M"
+        reservations:
+          cpus: "0.1"
+          memory: "64M"
+      restart_policy:
+        condition: unless-stopped
+        delay: 5s
